@@ -34,14 +34,14 @@ public:
         for(int i=0;i<n;i++){
             for(int j=1;j<accounts[i].size();j++){
                 string mail=accounts[i][j];
-                if(mp.find(mail)==mp.end()){
+                if(mp.find(mail)==mp.end()){//if the current email doesn't exist already
                     mp[mail]=i;
                 }else{
-                    Union(i,mp[mail]);
+                    Union(i,mp[mail]);//if exist union of two accounts
                 }
             }
         }
-        vector<string> list[n];
+        vector<string> list[n];//will store which account has which email
         for(auto it:mp){
             string mail=it.first;
             int node=find(it.second);
@@ -49,7 +49,7 @@ public:
         }
         vector<vector<string>> ans;
         for(int i=0;i<n;i++){
-            if(list[i].size()==0) continue;
+            if(list[i].size()==0) continue;//if let's say two accounts get merged then one will have no emails,so just skip that account
             sort(list[i].begin(),list[i].end());
             vector<string> temp;
             temp.push_back(accounts[i][0]);
