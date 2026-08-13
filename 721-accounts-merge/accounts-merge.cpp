@@ -1,6 +1,6 @@
 class Solution {
 public:
-    vector<int> parent;
+        vector<int> parent;
     vector<int> size;
     int find(int node){
         if(node==parent[node]){
@@ -27,6 +27,7 @@ public:
         parent.resize(n);
         size.assign(n,1);
         for(int i=0;i<n;i++) parent[i]=i;
+
         unordered_map<string,int> mp;
         for(int i=0;i<n;i++){
             for(int j=1;j<accounts[i].size();j++){
