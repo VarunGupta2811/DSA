@@ -1,22 +1,19 @@
 class Solution {
 public:
-        vector<int> parent;
+    vector<int> parent;
     vector<int> size;
-    int find(int node){
-        if(node==parent[node]){
-            return node; 
-        }
-        return parent[node]=find(parent[node]);
+    int find(int u){
+        if(u==parent[u]) return u;
+        return parent[u]=find(parent[u]);
     }
     void Union(int u,int v){
         int pu=find(u);
         int pv=find(v);
-
         if(pu==pv) return;
 
         if(size[pu]>size[pv]){
-            size[pu]+=size[pv];
             parent[pv]=pu;
+            size[pu]+=size[pv];
         }else{
             parent[pu]=pv;
             size[pv]+=size[pu];
@@ -27,8 +24,8 @@ public:
         parent.resize(n);
         size.assign(n,1);
         for(int i=0;i<n;i++) parent[i]=i;
-
         unordered_map<string,int> mp;
+
         for(int i=0;i<n;i++){
             for(int j=1;j<accounts[i].size();j++){
                 string mail=accounts[i][j];
