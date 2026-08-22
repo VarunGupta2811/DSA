@@ -28,11 +28,9 @@ public:
                 }
             }
         }
-        for(int i=1;i<=n;i++){
-            if(result[i]==INT_MAX) return -1;
-        }
         int ans=INT_MIN;
         for(int i=1;i<=n;i++){
+            if(result[i]==INT_MAX) return -1;
             ans=max(ans,result[i]);
         }
         return ans;
