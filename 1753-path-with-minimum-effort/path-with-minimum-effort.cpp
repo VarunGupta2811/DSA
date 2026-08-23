@@ -21,7 +21,7 @@ public:
             int diff=it.first;
             int r=it.second.first;
             int c=it.second.second;
-            if(r==rows-1 && c==cols-1) return diff;
+            // if(r==rows-1 && c==cols-1) return diff;
             for(int ind=0;ind<4;ind++){
                 int newr=r+dr[ind];
                 int newc=c+dc[ind];
@@ -34,6 +34,6 @@ public:
                 }
             }
         }
-        return 0;
+        return dist[rows-1][cols-1];
     }
 };
