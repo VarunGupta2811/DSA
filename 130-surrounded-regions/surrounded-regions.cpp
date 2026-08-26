@@ -1,62 +1,39 @@
 class Solution {
 public:
-    bool isValid(int i,int j,int n,int m){
-        return i>=0 && i<n && j>=0 && j<m;
+    int n,m;
+    void dfs(int i,int j,vector<vector<char>>& board,vector<vector<bool>>&visited){
+       if(i<0 || i>=n || j<0 || j>=m) return;
+       if(visited[i][j] || board[i][j]=='X') return;
+       visited[i][j]=true;
+       dfs(i-1,j,board,visited);
+       dfs(i+1,j,board,visited);
+       dfs(i,j-1,board,visited);
+       dfs(i,j+1,board,visited);
     }
-    void solve(vector<vector<char>>& mat) {
-        int n=mat.size();
-       int m=mat[0].size();
-       queue<pair<int,int>> q;
-       //upper row
-       for(int j=0;j<m;j++){
-            if(mat[0][j]=='O'){
-                mat[0][j]='Y';
-                q.push({0,j});
-            }
-       }
-       //bottom row
-       for(int j=0;j<m;j++){
-        if(mat[n-1][j]=='O'){
-            mat[n-1][j]='Y';
-            q.push({n-1,j});
-        }
-       }
-       //first column
-       for(int i=0;i<n;i++){
-        if(mat[i][0]=='O'){
-            mat[i][0]='Y';
-            q.push({i,0});
-        }
-       }
-        //last column
+    void solve(vector<vector<char>>& board) {
+        n=board.size();
+        m=board[0].size();
+        vector<vector<bool>>visited(n,vector<bool>(m,false));
         for(int i=0;i<n;i++){
-            if(mat[i][m-1]=='O'){
-                mat[i][m-1]='Y';
-                q.push({i,m-1});
+            if(board[i][0]=='O'){
+                dfs(i,0,board,visited);//first column
+            }
+            if(board[i][m-1]=='O'){
+                dfs(i,m-1,board,visited);//last column
             }
         }
-        int dr[]={-1,0,1,0};
-        int dc[]={0,-1,0,1};
-        while(!q.empty())
-        {
-            int r=q.front().first;
-            int c=q.front().second;
-            q.pop();
-            for(int ind=0;ind<4;ind++){
-                int newr=r+dr[ind];
-                int newc=c+dc[ind];
-                if(isValid(newr,newc,n,m) && mat[newr][newc]=='O'){
-                    mat[newr][newc]='Y';
-                    q.push({newr,newc});
-                }
+        for(int j=0;j<m;j++){
+            if(board[0][j]=='O'){
+                dfs(0,j,board,visited);//first row
+            }
+            if(board[n-1][j]=='O'){
+                dfs(n-1,j,board,visited);//last row
             }
         }
         for(int i=0;i<n;i++){
             for(int j=0;j<m;j++){
-                if(mat[i][j]=='O'){
-                    mat[i][j]='X';
-                }else if(mat[i][j]=='Y'){
-                    mat[i][j]='O';
+                if(board[i][j]=='O' && !visited[i][j]){
+                    board[i][j]='X';
                 }
             }
         }
