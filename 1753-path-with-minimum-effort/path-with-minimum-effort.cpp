@@ -1,14 +1,14 @@
 class Solution {
 public:
-    int rows,cols;
-    typedef pair<int,pair<int,int>> p;//{diff,{row,col}}
+    typedef pair<int,pair<int,int>> p;
+    int n,m;
     bool isValid(int i,int j){
-        return i>=0 && i<rows && j>=0 && j<cols;
+        return i>=0 && i<n && j>=0 && j<m;
     }
     int minimumEffortPath(vector<vector<int>>& heights) {
-        rows=heights.size();
-        cols=heights[0].size();
-        vector<vector<int>>dist(rows,vector<int>(cols,INT_MAX));
+        n=heights.size();
+        m=heights[0].size();
+        vector<vector<int>>dist(n,vector<int>(m,INT_MAX));
         priority_queue<p,vector<p>,greater<p>>pq;
         pq.push({0,{0,0}});
         dist[0][0]=0;
@@ -16,12 +16,12 @@ public:
         int dc[]={0,-1,0,1};
         while(!pq.empty())
         {
-            auto it=pq.top();
+            int diff=pq.top().first;
+            int r=pq.top().second.first;
+            int c=pq.top().second.second;
             pq.pop();
-            int diff=it.first;
-            int r=it.second.first;
-            int c=it.second.second;
-            if(r==rows-1 && c==cols-1) return diff;
+            if(diff>dist[r][c]) continue;
+            if(r==n-1 && c==m-1) return diff;
             for(int ind=0;ind<4;ind++){
                 int newr=r+dr[ind];
                 int newc=c+dc[ind];
