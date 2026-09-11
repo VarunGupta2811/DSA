@@ -1,52 +1,51 @@
 class Solution {
 public:
-    typedef pair<int,pair<int,int>>p;
-    bool isValid(int i,int j,int m,int n){
-        return i>=0 && i<m && j>=0 && j<n;
+bool isValid(int i,int j,int n,int m){
+        return i>=0 && i<n && j>=0 && j<m;
     }
     int orangesRotting(vector<vector<int>>& grid) {
-        int m=grid.size();
-        int n=grid[0].size();
-        vector<vector<int>>dist(m,vector<int>(n,INT_MAX));
-        priority_queue<p,vector<p>,greater<p>>pq;
-        for(int i=0;i<m;i++){
-            for(int j=0;j<n;j++){
-                if(grid[i][j]==2){
-                    pq.push({0,{i,j}});
-                    dist[i][j]=0;
-                }
+       int n=grid.size();
+       int m=grid[0].size();
+       int countOne=0;
+       vector<vector<bool>>visited(n,vector<bool>(m,false));
+       queue<pair<int,int>>q;
+       for(int i=0;i<n;i++){
+        for(int j=0;j<m;j++){
+            if(grid[i][j]==2){
+                q.push({i,j});
+                visited[i][j]=true;
+            }
+            else if(grid[i][j]==1){
+                countOne++;
             }
         }
-        int dr[]={-1,0,1,0};
-        int dc[]={0,-1,0,1};
-        while(!pq.empty())
-        {
-            int wt=pq.top().first;
-            int r=pq.top().second.first;
-            int c=pq.top().second.second;
-            pq.pop();
-            if(wt>dist[r][c]) continue;
+       }
+       if(countOne==0) return 0;
+       int dr[]={-1,0,1,0};
+       int dc[]={0,-1,0,1};
+       int timer=0;
+       while(!q.empty())
+       {
+        int p=q.size();
+        while(p--){
+            auto [r,c]=q.front();
+            q.pop();
             for(int ind=0;ind<4;ind++){
                 int newr=r+dr[ind];
                 int newc=c+dc[ind];
-                if(isValid(newr,newc,m,n) && grid[newr][newc]==1){
-                    if(wt+1<dist[newr][newc]){
-                        dist[newr][newc]=wt+1;
-                        pq.push({wt+1,{newr,newc}});
-                    }
+                if(isValid(newr,newc,n,m) && grid[newr][newc]==1 && !visited[newr][newc]){
+                    visited[newr][newc]=true;
+                    q.push({newr,newc});
                 }
             }
         }
-
-        int ans=0;
-        for(int i=0;i<m;i++){
-            for(int j=0;j<n;j++){
-                if(dist[i][j]==INT_MAX && grid[i][j]==1) return -1;
-                if(grid[i][j]==1){
-                    ans=max(ans,dist[i][j]);
-                }
-            }
+        timer++;
+    }
+       for(int i=0;i<n;i++){
+        for(int j=0;j<m;j++){
+            if(!visited[i][j] && grid[i][j]==1) return -1;
         }
-        return ans;
+       }
+       return timer-1;
     }
 };
