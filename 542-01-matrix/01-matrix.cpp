@@ -1,41 +1,38 @@
 class Solution {
 public:
-    typedef pair<int,pair<int,int>> p;
-    bool isValid(int i,int j,int m,int n){
-        return i>=0 && i<m && j>=0 && j<n;
+int n,m;
+    bool isValid(int i,int j){
+        return i>=0 && i<n && j>=0 && j<m;
     }
-    vector<vector<int>> updateMatrix(vector<vector<int>>& mat) {
-        int m=mat.size();
-        int n=mat[0].size();
-        vector<vector<int>>ans(m,vector<int>(n,INT_MAX));
+    vector<vector<int>> updateMatrix(vector<vector<int>>& grid) {
+        n=grid.size();
+        m=grid[0].size();
+        queue<pair<int,int>>q;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(grid[i][j]==0){
+                    q.push({i,j});
+                    grid[i][j]=0;
+                }else{
+                    grid[i][j]=-1;
+                }
+            }
+        }
         int dr[]={-1,0,1,0};
         int dc[]={0,-1,0,1};
-        priority_queue<p,vector<p>,greater<p>>pq;
-        for(int i=0;i<m;i++){
-            for(int j=0;j<n;j++){
-                if(mat[i][j]==0){
-                    pq.push({0,{i,j}});
-                    ans[i][j]=0;
-                }
-            }
-        }
-        while(!pq.empty())
+        while(!q.empty())
         {
-            int dist=pq.top().first;
-            int r=pq.top().second.first;
-            int c=pq.top().second.second;
-            pq.pop();
-            for(int i=0;i<4;i++){
-                int newr=r+dr[i];
-                int newc=c+dc[i];
-                if(isValid(newr,newc,m,n)){
-                    if(ans[r][c]+1<ans[newr][newc]){
-                        ans[newr][newc]=ans[r][c]+1;
-                        pq.push({ans[newr][newc],{newr,newc}});
-                    }
+            auto [r,c]=q.front();
+            q.pop();
+            for(int ind=0;ind<4;ind++){
+                int newr=r+dr[ind];
+                int newc=c+dc[ind];
+                if(isValid(newr,newc) &&  grid[newr][newc]==-1){
+                    q.push({newr,newc});
+                    grid[newr][newc]=grid[r][c]+1;
                 }
             }
         }
-        return ans;
+        return grid;
     }
 };
