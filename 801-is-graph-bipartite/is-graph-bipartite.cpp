@@ -1,18 +1,13 @@
 class Solution {
 public:
-    bool bfs(int node, vector<vector<int>> &adj, vector<int>& color) {
-        color[node]=0;
-        queue<int> q;
-        q.push(node);
-        while(!q.empty())
+    bool dfs(int node, vector<vector<int>> &graph, vector<int>& color,int curr) {
+        color[node]=curr;
+        for(int neigh:graph[node])
         {
-            int root=q.front();
-            q.pop();
-            for(int neigh:adj[root]){
-                if(color[neigh]!=-1 && color[neigh]==color[root]) return false;
-                if(color[neigh]==-1){
-                    color[neigh]=(color[root]+1)%2;
-                    q.push(neigh);
+            if(color[neigh]!=-1 && color[neigh]==color[node]) return false;
+            if(color[neigh]==-1){
+                if(!dfs(neigh,graph,color,(color[node]+1)%2)){
+                    return false;
                 }
             }
         }
@@ -23,7 +18,7 @@ public:
         int V=graph.size();
         vector<int> color(V,-1);
         for(int i = 0; i < V; i++) {
-            if(color[i]==-1 && !bfs(i, graph, color)) {
+            if(color[i]==-1 && !dfs(i, graph, color,0)) {
                 return false;
             }
         }
