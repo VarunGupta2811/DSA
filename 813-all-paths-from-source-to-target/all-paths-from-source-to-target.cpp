@@ -1,22 +1,23 @@
 class Solution {
 public:
-    void dfs(int curr,int target,vector<vector<int>>& graph,vector<int> &currPath,vector<vector<int>> &result){
-        if(curr==target){
+int targetNode;
+    void dfs(int node,vector<int> &currPath,vector<vector<int>>&graph,vector<vector<int>>&result){
+        if(node==targetNode){
             result.push_back(currPath);
             return;
         }
-        for(int neigh:graph[curr]){
+        for(int neigh:graph[node]){
             currPath.push_back(neigh);
-            dfs(neigh,target,graph,currPath,result);
+            dfs(neigh,currPath,graph,result);
             currPath.pop_back();
         }
     }
     vector<vector<int>> allPathsSourceTarget(vector<vector<int>>& graph) {
-        int n=graph.size();
+        targetNode=graph.size()-1;
         vector<vector<int>> result;
         vector<int> currPath;
         currPath.push_back(0);
-        dfs(0,n-1,graph,currPath,result);
+        dfs(0,currPath,graph,result);
         return result;
     }
 };
