@@ -11,13 +11,11 @@ public:
             Indeg[v]++;
             adj[u].push_back(v);
         }
-        int ans=-1;
         for(int i=1;i<n+1;i++){
             if(Outdeg[i]==0 && Indeg[i]==n-1){
-                ans=i;
-                break;
+                return i;
             }
         }
-        return ans;
+        return -1;
     }
 };
