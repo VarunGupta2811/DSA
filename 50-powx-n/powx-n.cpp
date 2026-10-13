@@ -2,7 +2,7 @@ class Solution {
 public:
     double solve(double x, long long n) {
         if (n == 0) {
-            return 1.0;
+            return 1;
         }
         double half = solve(x, n / 2);
         if (n % 2 != 0) {
@@ -19,7 +19,7 @@ public:
         }
         double ans = solve(x, power);
         if (n < 0) {
-            return 1.0 / ans;
+            return 1 / ans;
         }
         return ans;
     }
